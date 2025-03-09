@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Route Game</title>
+</head>
+<body>
+    <h1>Find the Shortest Route</h1>
+    <p>Find the shortest route from <b>{{ source }}</b> to <b>{{ destination }}</b></p>
+    <p>Hint: The shortest route is {{ path_length }} flights long.</p>
+
+    {% if player_path %}
+        <p>Your Current Path: {{ player_path }}</p>
+    {% endif %}
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="/play" method="post">
+        <label>Enter Next Country:</label>
+        <input type="text" name="next_country" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="/restart">Restart Game</a>
+</body>
+</html>
