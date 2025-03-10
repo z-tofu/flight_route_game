@@ -1,27 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Route Game</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --background-color: #f5f7fa;
+            --text-color: #2c3e50;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+
+        .game-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .route-info {
+            background-color: rgba(74, 111, 165, 0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .current-path {
+            background-color: rgba(79, 195, 247, 0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--error-color);
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .restart-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .restart-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Find the Shortest Route</h1>
-    <p>Find the shortest route from <b>{{ source }}</b> to <b>{{ destination }}</b></p>
-    <p>Hint: The shortest route is {{ path_length }} flights long.</p>
+    <div class="game-container">
+        <h1>Find the Shortest Route</h1>
 
-    {% if player_path %}
-        <p>Your Current Path: {{ player_path }}</p>
-    {% endif %}
+        <div class="route-info">
+            <p>Find the shortest route from <span class="highlight">{{ source }}</span> to <span class="highlight">{{ destination }}</span></p>
+            <p>Hint: The shortest route is <span class="highlight">{{ path_length }}</span> flights long.</p>
+        </div>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+        {% if player_path %}
+            <div class="current-path">
+                <p>Your Current Path: {{ player_path }}</p>
+            </div>
+        {% endif %}
 
-    <form action="/play" method="post">
-        <label>Enter Next Country:</label>
-        <input type="text" name="next_country" required>
-        <button type="submit">Submit</button>
-    </form>
+        {% if error %}
+            <div class="error-message">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
 
-    <a href="/restart">Restart Game</a>
+        <form action="/play" method="post">
+            <label for="next-country">Enter Next Country:</label>
+            <input type="text" id="next-country" name="next_country" required autocomplete="off">
+            <button type="submit">Submit</button>
+        </form>
+
+        <a href="/restart" class="restart-link">Restart Game</a>
+    </div>
 </body>
 </html>
