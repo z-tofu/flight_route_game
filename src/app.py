@@ -86,7 +86,28 @@ def play():
 
     # Check if the player reached the destination
     if next_country == session["destination"]:
-        return render_template("win.html", path=" → ".join(player_path))
+        # Calculate score based on optimal vs actual path length
+        optimal_length = len(correct_path) - 1  # Number of flights in optimal path
+        player_length = len(player_path) - 1  # Number of flights in player's path
+
+        # Calculate score (100 points for optimal path, deduct points for extra steps)
+        if player_length == optimal_length:
+            score = 100  # Perfect score for optimal path
+            score_message = "Perfect! You found the optimal route!"
+        else:
+            # Deduct points for each extra flight taken (10 points per extra flight)
+            extra_flights = player_length - optimal_length
+            score = max(0, 100 - (extra_flights * 10))
+            score_message = f"You took {extra_flights} more flight(s) than the optimal route."
+
+        # Find the optimal path for display
+        optimal_path_display = " → ".join(correct_path)
+
+        return render_template("win.html",
+                               path=" → ".join(player_path),
+                               score=score,
+                               score_message=score_message,
+                               optimal_path=optimal_path_display)
 
     # If not, show the current game state again
     return render_template("game.html", source=session["source"], destination=session["destination"],

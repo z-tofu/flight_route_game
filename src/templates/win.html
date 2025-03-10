@@ -12,6 +12,7 @@
             --background-color: #f5f7fa;
             --text-color: #2c3e50;
             --success-color: #2ecc71;
+            --warning-color: #f39c12;
             --border-radius: 8px;
         }
 
@@ -61,8 +62,19 @@
             background-color: rgba(46, 204, 113, 0.1);
             padding: 20px;
             border-radius: var(--border-radius);
-            margin: 30px 0;
+            margin: 20px 0;
             border-left: 4px solid var(--success-color);
+            display: inline-block;
+            min-width: 60%;
+            text-align: center;
+        }
+
+        .optimal-path-container {
+            background-color: rgba(79, 195, 247, 0.1);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-color);
             display: inline-block;
             min-width: 60%;
             text-align: center;
@@ -72,6 +84,49 @@
             font-weight: bold;
             color: var(--secondary-color);
             font-size: 1.2rem;
+        }
+
+        .score-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            font-weight: bold;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .score-perfect {
+            color: var(--success-color);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+            to { text-shadow: 0 0 20px rgba(46, 204, 113, 0.8); }
+        }
+
+        .score-message {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin: 10px 0;
         }
 
         .play-again {
@@ -108,10 +163,21 @@
 <body>
     <div class="win-container">
         <h1><span class="emoji">🎉</span> You Won! <span class="emoji">🎉</span></h1>
-        <p>You found the shortest path:</p>
 
+        <div class="score-container">
+            <div class="score-header">YOUR SCORE</div>
+            <div class="score-value {% if score == 100 %}score-perfect{% endif %}">{{ score }}</div>
+            <div class="score-message">{{ score_message }}</div>
+        </div>
+
+        <p>Your route:</p>
         <div class="path-container">
             <p class="path">{{ path }}</p>
+        </div>
+
+        <p>Optimal route:</p>
+        <div class="optimal-path-container">
+            <p class="path">{{ optimal_path }}</p>
         </div>
 
         <a href="/restart" class="play-again">Play Again</a>
@@ -150,8 +216,22 @@
             }
         }
 
+        // Extra celebration for perfect score
+        function celebratePerfectScore() {
+            const score = {{ score }};
+            if (score === 100) {
+                // More intense confetti for perfect score
+                setTimeout(() => {
+                    createConfetti();
+                }, 1000);
+            }
+        }
+
         // Create confetti on page load
-        window.addEventListener('load', createConfetti);
+        window.addEventListener('load', () => {
+            createConfetti();
+            celebratePerfectScore();
+        });
     </script>
 </body>
 </html>

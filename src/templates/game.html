@@ -70,6 +70,14 @@
             border-left: 4px solid var(--error-color);
         }
 
+        .game-info {
+            background-color: rgba(46, 204, 113, 0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--success-color);
+        }
+
         form {
             margin-bottom: 25px;
         }
@@ -125,6 +133,14 @@
             color: var(--secondary-color);
             text-decoration: underline;
         }
+
+        .note {
+            font-size: 0.9rem;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(255, 193, 7, 0.1);
+            border-radius: var(--border-radius);
+        }
     </style>
 </head>
 <body>
@@ -148,11 +164,19 @@
             </div>
         {% endif %}
 
+        <div class="game-info">
+            <p>You can try any valid route, not just the shortest! Your score will be based on how close your route is to the optimal path.</p>
+        </div>
+
         <form action="/play" method="post">
             <label for="next-country">Enter Next Country:</label>
             <input type="text" id="next-country" name="next_country" required autocomplete="off">
             <button type="submit">Submit</button>
         </form>
+
+        <div class="note">
+            <p>Scoring System: 100 points for finding the optimal route. 10 points deducted for each extra flight.</p>
+        </div>
 
         <a href="/restart" class="restart-link">Restart Game</a>
     </div>
